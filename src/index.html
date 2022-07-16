@@ -1,16 +1,74 @@
 <!DOCTYPE html>
-<html lang="js">
+<html lang="ja">
+
 <head>
 	<meta charset="UTF-8">
-	<style>
-		<?!=include("style.css")?>
-	</style>
-	<title><?!=getTitle()?></title>
+	<?!=include("style.css")?>
+	<title>
+		<?!=getTitle()?>
+	</title>
 </head>
+
 <body>
-	
-	<script>
-		<?!=include("site.js")?>
-	</script>
+	<h1>名前一覧</h1>
+	<hr />
+	<div id="loadingAnimation">
+		<i class="fas fa-spinner fa-3x fa-spin"></i>
+	</div>
+	<div class="row_box row g-1">
+		<div class="block_add col-auto">
+			<h2>新規登録</h2>
+			<Table id="addField" name="addField">
+				<tr>
+					<td class="col">
+						名前:
+					</td>
+					<td>
+						<input type="text" maxlength="20" size="20" id="name" name="name">
+					</td>
+				</tr>
+				<tr>
+					<td class="col">
+						ひらがな:
+					</td>
+					<td>
+						<input type="text" maxlength="20" size="20" id="hiragana" name="hiragana">
+					</td>
+				</tr>
+				<tr>
+					<td class="col">
+						年齢:
+					</td>
+					<td>
+						<input type="number" maxlength="3" size="3" id="age" name="age">
+					</td>
+				</tr>
+				<tr>
+					<td class="btn_col" colspan="2">
+						<button class="btn btn-primary btn-add" onclick="addClick();">登録</button>
+					</td>
+				</tr>
+			</Table>
+		</div>
+		<div class="block_member col-auto">
+			<h2>一覧</h2>
+			<input type="hidden" name="url" id="url" value="<?!=getAppUrl()?>">
+			<table id="dataField" name="dataField" class="table-primary table-bordered border-primary">
+				<thead>
+					<tr id="dataHeader" name="dataHeader">
+						<th>名前</th>
+						<th>ひらがな</th>
+						<th>年齢</th>
+						<th>メモ</th>
+						<th>削除</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<?!=include("index.js")?>
 </body>
+
 </html>

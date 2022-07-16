@@ -1,0 +1,29 @@
+<script type="text/javascript">
+	const nameElement = document.getElementById("name");
+	const textElement = document.getElementById("text");
+
+	document.onkeypress = function (e) {
+		// エンターキーだったら無効にする
+		if (e.key === "Enter") {
+			return false;
+		}
+	}
+	function saveClick() {
+		var result = confirm(nameElement.value + 'を保存しますか。');
+		if (!result) {
+			return;
+		}
+		let loadingAnimation = document.getElementById("loadingAnimation");
+		loadingAnimation.style.visibility = "visible";
+		google.script.run.withSuccessHandler(close).saveDocument(nameElement.value, textElement.value);
+	}
+
+	function close() {
+		let loadingAnimation = document.getElementById("loadingAnimation");
+		loadingAnimation.style.visibility = "hidden";
+	}
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>

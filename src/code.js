@@ -4,11 +4,11 @@
 function getData() {
 	// 連携しているスプレッドシートからシート1を取得する
 	const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("シート1");
-	// B列の中でB2から最後の内容が入力されている行までの入力数を取得する。
-	const lastRow = sheet.getRange("B2:B").getValues().filter(String).length;
+	// B列の中でB2から最後の内容が入力されている行までの入力数を取得する
+	const lastRow = sheet.getRange("B3:B").getValues().filter(String).length;
 	// B2からD列の中で内容が入力されているすべての行内容を取得する
 	// getRange(2行目, B列, 取得する行の数, 取得する列の数)
-	const rangeList = sheet.getRange(2, 2, lastRow, 3).getValues();
+	const rangeList = sheet.getRange(3, 2, lastRow, sheet.getLastColumn() - 1).getValues();
 
 	// 取得した内容をログに出力する
 	Logger.log(rangeList);
@@ -32,6 +32,33 @@ function setData(name, hiragana, age) {
 	// B2からD列の中で内容が入力されているすべての行内容を取得する
 	// getRange(入力されている行の数＋2, B列, 保存したい内容の数, 保存したい内容のセルの数)
 	sheet.getRange(lastRow + 2, 2, values.length, values[0].length).setValues(values);
+	// 登録した内容を枠線を囲う
+	sheet.getRange(lastRow + 2, 2, values.length, values[0].length).setBorder(true, true, true, true, true, true, "Black", SpreadsheetApp.BorderStyle.SOLID);
+	// 更新されたデータを返却する
+	return getData();
+}
+/**
+ * スプレッドシートからデータを削除する
+ * @param index 削除するデータの位置 
+ * @returns 
+ */
+function deleteData(index){
+	// getData()でシートの内容を取得して該当の内容を変数に格納する
+	let data = getData();
+	Logger.log(data);
+	data.splice(index, 1)
+	Logger.log(data);
+	// 連携しているスプレッドシートからシート1を取得する
+	const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("シート1");
+	// 一度データを削除する
+	sheet.getRange("B3:D").clearContent();
+	// 枠線を削除する
+	sheet.getRange("B3:D").clearFormat();
+	// 登録する
+	sheet.getRange(3, 2, data.length, data[0].length).setValues(data);
+	// 枠線で囲う
+	sheet.getRange(3, 2, data.length, data[0].length).setBorder(true, true, true, true, true, true, "Black", SpreadsheetApp.BorderStyle.SOLID);
+	return data;
 }
 
 /**
@@ -52,7 +79,7 @@ function saveDocument(name, text) {
 		targetFolder = folderIterator.next();
 	} else {
 		// 存在しない場合は、ワークショップフォルダを作成してtargetFolderに情報を格納する
-		targetFolder = root.createFolder(name);
+		targetFolder = root.createFolder("ワークショップ");
 	}
 
 	// ドキュメントの情報を格納する為の変数を定義しておく

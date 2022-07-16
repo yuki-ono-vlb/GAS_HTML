@@ -18,7 +18,7 @@ function doGet(e) {
 
     return htmlIndex
         .evaluate()
-        .setTitle(_title)
+        .setTitle(getTitle())
         .setFaviconUrl('https://drive.google.com/file/d/1PiGhr86ddYOerCQm8aL2lN2bwAJSFf-t/view?usp=sharing' + ".png")
         .addMetaTag('viewport', 'width=device-width, initial-scale=1')
         .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
@@ -35,4 +35,20 @@ function include(filename) {
         .getContent()
         .replace("&lt;", "<")
         .replace("&gt;", ">")
+}
+
+/**
+ * ウェブサイトのタイトルを表示する
+ * @returns タイトル
+ */
+function getTitle() {
+    return "ワークショップ サンプル";
+}
+
+/**
+ * 自身のURLを取得する。
+ * @returns 自身のURL
+ */
+function getAppUrl() {
+    return ScriptApp.getService().getUrl();
 }

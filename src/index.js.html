@@ -1,0 +1,79 @@
+<script type="text/javascript">
+	const nameElement = document.getElementById("name");
+	const hiraganaElement = document.getElementById("hiragana");
+	const ageElement = document.getElementById("age");
+	const urlElement = document.getElementById("url");
+	
+	document.onkeypress = function (e) {
+		// エンターキーだったら無効にする
+		if (e.key === "Enter") {
+			return false;
+		}
+	}
+	window.onload = () => {
+		init();
+	}
+
+	function init() {
+		google.script.run.withSuccessHandler(setTableData).getData();
+
+		let loadingAnimation = document.getElementById("loadingAnimation");
+		loadingAnimation.style.visibility = "visible";
+	}
+
+	function setTableData(userData) {
+		console.log(userData);
+		let loadingAnimation = document.getElementById("loadingAnimation");
+		let dataField = document.getElementById("dataField");
+		loadingAnimation.style.visibility = "hidden";
+		dataField.style.visibility = "visible";
+		//#dataFieldの初期化
+		$("#dataField tbody").empty();
+		//#dataFieldに出力
+		for (var index = 0; index < userData.length; index++) {
+			//タグ作成
+			const name = userData[index][0];
+			const hiragana = userData[index][1];
+			const age = userData[index][2];
+			const newDoc = '<a class=\"btn btn-primary btn-add\" target=\"_blank" href=\"' + urlElement.value + "?page=memo&name=" + name + '\">新規作成</a>';
+			const deleteBtn = '<button class=\"btn btn-danger btn-add\"  onclick=\"delClick(' + name + ', ' + index + ');\">削除</button>';
+			$("#dataField tbody").append(
+				$("<tr>").append(
+					$("<td>").html(name)
+				).append(
+					$("<td>").html(hiragana)
+				).append(
+					$("<td>").html(age)
+				).append(
+					$("<td>").html(newDoc)
+				).append(
+					$("<td>").html(deleteBtn)
+				)
+			);
+		}
+	}
+
+	// スプレッドシートに登録する
+	function addClick() {
+		var result = confirm(nameElement.value + 'さんを保存しますか。');
+		if(!result){
+			return;
+		}
+		google.script.run.withSuccessHandler(setTableData).setData(nameElement.value, hiraganaElement.value, ageElement.value);
+		let loadingAnimation = document.getElementById("loadingAnimation");
+		loadingAnimation.style.visibility = "visible";
+	}
+	function delClick(name, index){
+		var result = confirm(name + 'さんを削除しますか。');
+		if(!result){
+			return;
+		}
+		google.script.run.withSuccessHandler(setTableData).deleteData(index);
+		let loadingAnimation = document.getElementById("loadingAnimation");
+		loadingAnimation.style.visibility = "visible";
+	}
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<?!=include("style.css")?>
+	<title>
+		<?!=getTitle()?>
+	</title>
+</head>
+
+<body>
+	<h1>ドキュメント作成</h1>
+	<hr />
+	<div id="loadingAnimation">
+		<i class="fas fa-spinner fa-3x fa-spin"></i>
+	</div>
+	<div class="memo">
+		<h2>新規登録</h2>
+		<Table id="memoField" name="memoField">
+			<tr>
+				<td class="col">
+					ファイル名:
+				</td>
+				<td>
+					<input type="text" maxlength="20" size="20" id="name" name="name">
+				</td>
+			</tr>
+			<tr>
+				<td class="col">
+					内容:
+				</td>
+				<td>
+					<textarea name="text" id="text" cols="30" rows="10"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="btn_col" colspan="2">
+					<button class="btn btn-primary btn-add" onclick="saveClick();">登録</button>
+				</td>
+			</tr>
+		</Table>
+	</div>
+	<?!=include("memo.js")?>
+</body>
+
+</html>
